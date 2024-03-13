@@ -106,6 +106,3 @@ def run_simulation(agent_path,agent_type,data_path,
     
     
     return memory.to_json(orient=orientation), balance, account_value
-
-if __name__ == '__main__':
-    app.run(debug=True)
