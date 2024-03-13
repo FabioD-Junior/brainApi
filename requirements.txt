@@ -1,0 +1,8 @@
+## Install Finrl Mini
+git+https://github.com/FabioD-Junior/finrl_mini
+
+# Dependencies For the API
+Flask==3.0.0
+numpy>=1.17.3
+pandas
+
