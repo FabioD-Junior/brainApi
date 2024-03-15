@@ -259,10 +259,10 @@ class StockTradingEnv(gym.Env):
                         / temp["daily_return"].std()
                         )
             else:  
-                sharpe = "NaN"
+                sharpe = 0
                 
         except Exception as e:
-            sharpe = "NaN"
+            sharpe = 0
             
         ### Custom data extraction    
         for ticker in range(self.stock_dim):
@@ -338,6 +338,10 @@ class StockTradingEnv(gym.Env):
             
             a = self.save_action_memory()
             a.to_csv("results/save_action_memory.csv")
+            print("----------------------------------------")
+            print("\n\n\n\n\n\n\n")
+            print(sharpe)
+            print(type(sharpe))
             
             self.store_session(f'{self.day}',
                  f'{self.episode}',
@@ -682,25 +686,3 @@ class StockTradingEnv(gym.Env):
 
         with open(ini_path, 'w') as ini_file:
             ini.write(ini_file)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
