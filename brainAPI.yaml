@@ -1,0 +1,158 @@
+openapi: 3.0.0
+info:
+  title: Trading Simulation & Chatbot API
+  description: API for authentication, trading simulation, and chatbot interactions.
+  version: "1.0.0"
+servers:
+  - url: http://localhost:5000/
+paths:
+  /auth/login:
+    post:
+      summary: Login Endpoint
+      description: Authenticates a user and returns a JWT token.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                secret:
+                  type: string
+              required:
+                - username
+                - secret
+      responses:
+        '200':
+          description: Successful login.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+        '400':
+          description: Invalid credentials.
+
+  /bot/simulate:
+    get:
+      summary: Trading Simulation
+      description: Executes a trading simulation based on the provided parameters.
+      parameters:
+        - name: agent_path
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: agent_type
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: data_path
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: trade_limit
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: buy_upper_limit
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: sell_upper_limit
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: initial_amount
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: start_date
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: env
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: end_date
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: symbol
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: user
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: resume_session
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: orientation
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful simulation execution.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  asset_history:
+                    type: string
+                    description: Asset history in JSON format.
+                  current_balance:
+                    type: number
+                    description: Current balance of the simulation.
+                  asset_value:
+                    type: number
+                    description: Asset value in the simulation.
+                  sharpe_ratio:
+                    type: number
+                    description: Sharpe ratio of the simulation.
+        '401':
+          description: Invalid or missing token.
+
+  /chatbot/ask:
+    get:
+      summary: Chatbot Interaction
+      description: Returns the chatbot's response based on the user's message.
+      parameters:
+        - name: userMessage
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Chatbot's response.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  botmessage:
+                    type: string
+        '401':
+          description: Invalid or missing token.
