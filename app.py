@@ -4,6 +4,8 @@
 
 ## Libs for the main simulation api
 from flask import Flask, request, jsonify
+from flask_cors import CORS
+
 import pandas as pd
 
 ## Libs for the AiHub Chatbot
@@ -15,7 +17,7 @@ from datetime import datetime
 
 # ..:: Config
 app = Flask(__name__)
-
+CORS(app)
 
 # ..:: Endpoints
 ## :: Login 
@@ -66,8 +68,6 @@ def simulate():
     }
     
     return jsonify(data)
-
- 
  
 ## :: Bot Auxiliary functions
 
