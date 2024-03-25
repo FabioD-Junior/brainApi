@@ -124,23 +124,26 @@ dow_tickers = ['AAPL', 'AMGN', 'AXP', 'BA', 'CAT', 'CRM',
 
 
 ## ..:: Endpoints 
-@app.route('/chatbot/ask', methods=['GET'])
+@app.route('/chatbot/ask', methods=['POST'])  # Changed to use the POST method by preference of our front-end team
 def ask():
-    ## Autentication
+    ## Authentication
     auth_header = request.headers.get('Authorization')
+    token = auth_header.split(" ")[1] if auth_header and auth_header.startswith("Bearer ") else None
     
-    token       = auth_header.split(" ")[1] if auth_header and auth_header.startswith("Bearer ") else None
-    user_message = request.args.get('userMessage')
+    # Accessing the user message from the POST request body
+    # Assuming the data is sent as JSON
+    data = request.json
+    user_message = data.get('userMessage') if data else None
     
     if not token or token != 'eyJhbGciOiJIUd2VyIn0.NDFAApMqRBwacpLumnyC_p7IWWmmWEFmXJIVkRoIA-I':
         return {"message": "Invalid or missing token"}, 401
 
     kb = pd.read_csv("kb_001.csv")
     
-    resp = get_best_response(user_message,kb)
+    resp = get_best_response(user_message, kb)
     
     if resp in function_map:
-        return jsonify({'botmessage': function_map[resp](user_message) })
+        return jsonify({'botmessage': function_map[resp](user_message)})
         
     return jsonify({'botmessage': resp})
 
